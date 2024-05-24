@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from '@/lib/supabase/supabaseServer';
 
+// CORS許可アドレス
+const CORS_ADDRESS = process.env.CORS_ADDRESS as string;
+
 /**
  * 認証ユーザーの取得API
  * @param request リクエスト
@@ -13,8 +16,17 @@ export async function GET(
     const { data: { user }, error } = await supabase.auth.getUser();
 
     if (error) {
-        return NextResponse.json({ status: 401, error: 'Unauthorized' });
+        const response = NextResponse.json({ status: 401, error: 'Unauthorized' });
+        response.headers.set('Access-Control-Allow-Origin', CORS_ADDRESS);
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     }
 
-    return NextResponse.json({ user });
+    const response = NextResponse.json({ user });
+    response.headers.set('Access-Control-Allow-Origin', CORS_ADDRESS);
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    return response;
 }

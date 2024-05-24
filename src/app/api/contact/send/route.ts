@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { EmailTemplate } from "@/app/components/template/email-template";
 
+// CORS許可アドレス
+const CORS_ADDRESS = process.env.CORS_ADDRESS as string;
+
 // Resendサービスのインスタンス化
 const resend = new Resend(process.env.RESEND_API_KEY);
 // Resendサービスの値
@@ -48,11 +51,23 @@ export async function POST(request: Request) {
         });
 
         if (error) {
-            return NextResponse.json({ error });
+            const response = NextResponse.json({ error });
+            response.headers.set('Access-Control-Allow-Origin', CORS_ADDRESS);
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
         }
 
-        return NextResponse.json({data});
+        const response = NextResponse.json({ data });
+        response.headers.set('Access-Control-Allow-Origin', CORS_ADDRESS);
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     } catch (error) {
-        return NextResponse.json({ error });
+        const response = NextResponse.json({ error });
+        response.headers.set('Access-Control-Allow-Origin', CORS_ADDRESS);
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     }
 }
