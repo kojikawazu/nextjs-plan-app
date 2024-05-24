@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseRouteHandlerClient } from "@/app/lib/supabaseRouteHandleClient";
+import { supabaseRouteHandlerClient } from "@/lib/supabase/supabaseRouteHandleClient";
 
 /**
  * OAuth認証用Api
- * @param request 
- * @returns response
+ * @param request リクエスト
+ * @returns response リダイレクト
  */
 export async function GET(
     request: NextRequest,
 ) {
     const requestURL = new URL(request.url);
     const code = requestURL.searchParams.get("code");
-    console.log(code);
 
     if (code) {
         const supabase = supabaseRouteHandlerClient();

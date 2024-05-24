@@ -3,7 +3,7 @@ import AuthServerButton from '@/app/components/auth/AuthServerButton';
 
 /**
  * Headersコンポーネント
- * @returns 
+ * @returns JSX
  */
 const Header = () => {
   return (
